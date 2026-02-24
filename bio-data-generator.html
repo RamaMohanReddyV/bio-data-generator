@@ -761,13 +761,13 @@
 
                 <div class="form-row">
                     <div class="form-group">
-                        <label class="required">Birth Date</label>
-                        <input type="date" id="birthDate">
-                        <div class="error-message">Birth date is required</div>
+                        <label class="required">Birth Year</label>
+                        <input type="number" id="birthDate" placeholder="e.g., 1990" min="1900" max="2099">
+                        <div class="error-message">Birth year is required</div>
                     </div>
                     <div class="form-group">
-                        <label>Birth Time</label>
-                        <input type="time" id="birthTime">
+                        <label>Age</label>
+                        <input type="number" id="age" placeholder="e.g., 34" min="0" max="120">
                     </div>
                 </div>
 
@@ -806,37 +806,6 @@
                 </div>
             </div>
 
-            <!-- QUALIFICATION & OCCUPATION -->
-            <div class="form-section">
-                <h2>Education & Career</h2>
-                
-                <div class="form-group">
-                    <label>Qualification</label>
-                    <input type="text" id="qualification" placeholder="e.g., B.Tech in Computer Science" maxlength="50">
-                </div>
-
-                <div class="form-group">
-                    <label>Working Place / Organization</label>
-                    <input type="text" id="workingPlace" placeholder="Enter company/organization name" maxlength="50">
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Designation</label>
-                        <input type="text" id="designation" placeholder="e.g., Software Engineer" maxlength="30">
-                    </div>
-                    <div class="form-group">
-                        <label>Annual Salary</label>
-                        <input type="text" id="salary" placeholder="e.g., ₹ 10,00,000" maxlength="20">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label>Additional Info</label>
-                    <textarea id="additionalInfo" placeholder="Any additional professional information"></textarea>
-                </div>
-            </div>
-
             <!-- FAMILY DETAILS SECTION -->
             <div class="form-section">
                 <h2>Family Details</h2>
@@ -866,8 +835,14 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Brother(s)</label>
-                    <textarea id="brotherDetails" placeholder="e.g., 1 Married Brother in IT Industry, 1 Unmarried Brother"></textarea>
+                    <label>Siblings</label>
+                    <select id="brotherDetails">
+                        <option value="">-- Select --</option>
+                        <option value="Younger Brother">Younger Brother</option>
+                        <option value="Younger Sister">Younger Sister</option>
+                        <option value="Older Brother">Older Brother</option>
+                        <option value="Older Sister">Older Sister</option>
+                    </select>
                 </div>
 
                 <div class="form-group">
@@ -977,12 +952,12 @@
                             <div class="preview-value" id="prev_fullName">—</div>
                         </div>
                         <div class="preview-row">
-                            <div class="preview-label">Birth Date</div>
+                            <div class="preview-label">Birth Year</div>
                             <div class="preview-value" id="prev_birthDate">—</div>
                         </div>
                         <div class="preview-row">
-                            <div class="preview-label">Birth Time</div>
-                            <div class="preview-value" id="prev_birthTime">—</div>
+                            <div class="preview-label">Age</div>
+                            <div class="preview-value" id="prev_age">—</div>
                         </div>
                         <div class="preview-row">
                             <div class="preview-label">Birth Place</div>
@@ -1003,26 +978,6 @@
                         <div class="preview-row">
                             <div class="preview-label">Complexion</div>
                             <div class="preview-value" id="prev_complexion">—</div>
-                        </div>
-                        <div class="preview-row">
-                            <div class="preview-label">Qualification</div>
-                            <div class="preview-value" id="prev_qualification">—</div>
-                        </div>
-                        <div class="preview-row">
-                            <div class="preview-label">Working Place</div>
-                            <div class="preview-value" id="prev_workingPlace">—</div>
-                        </div>
-                        <div class="preview-row">
-                            <div class="preview-label">Designation</div>
-                            <div class="preview-value" id="prev_designation">—</div>
-                        </div>
-                        <div class="preview-row">
-                            <div class="preview-label">Salary</div>
-                            <div class="preview-value" id="prev_salary">—</div>
-                        </div>
-                        <div class="preview-row">
-                            <div class="preview-label">Additional Info</div>
-                            <div class="preview-value" id="prev_additionalInfo">—</div>
                         </div>
                         <div class="preview-row">
                             <div class="preview-label">Phone</div>
@@ -1055,7 +1010,7 @@
                             <div class="preview-value" id="prev_motherOccupation">—</div>
                         </div>
                         <div class="preview-row">
-                            <div class="preview-label">Brother(s)</div>
+                            <div class="preview-label">Siblings</div>
                             <div class="preview-value" id="prev_brotherDetails">—</div>
                         </div>
                         <div class="preview-row">
@@ -1194,9 +1149,8 @@
 
             collectFormData() {
                 const fields = [
-                    'fullName', 'birthDate', 'birthTime', 'birthPlace', 'caste', 'gothram',
-                    'height', 'complexion', 'qualification', 'workingPlace', 'designation',
-                    'salary', 'additionalInfo', 'phone', 'email', 'fatherName',
+                    'fullName', 'birthDate', 'age', 'birthPlace', 'caste', 'gothram',
+                    'height', 'complexion', 'phone', 'email', 'fatherName',
                     'fatherOccupation', 'motherName', 'motherOccupation', 'brotherDetails',
                     'sisterDetails', 'inlawDetails', 'landDetails', 'address'
                 ];
@@ -1211,17 +1165,12 @@
                 const previewFields = {
                     fullName: 'prev_fullName',
                     birthDate: 'prev_birthDate',
-                    birthTime: 'prev_birthTime',
+                    age: 'prev_age',
                     birthPlace: 'prev_birthPlace',
                     caste: 'prev_caste',
                     gothram: 'prev_gothram',
                     height: 'prev_height',
                     complexion: 'prev_complexion',
-                    qualification: 'prev_qualification',
-                    workingPlace: 'prev_workingPlace',
-                    designation: 'prev_designation',
-                    salary: 'prev_salary',
-                    additionalInfo: 'prev_additionalInfo',
                     phone: 'prev_phone',
                     email: 'prev_email',
                     fatherName: 'prev_fatherName',
@@ -1369,17 +1318,13 @@ body { font-family: Arial, sans-serif; margin: 20px; }
                 // Personal details rows
                 const personalFields = [
                     { label: 'Full Name', value: this.formData.fullName },
-                    { label: 'Birth Date', value: this.formData.birthDate },
-                    { label: 'Birth Time', value: this.formData.birthTime },
+                    { label: 'Birth Year', value: this.formData.birthDate },
+                    { label: 'Age', value: this.formData.age },
                     { label: 'Birth Place', value: this.formData.birthPlace },
                     { label: 'Caste', value: this.formData.caste },
                     { label: 'Gothram', value: this.formData.gothram },
                     { label: 'Height', value: this.formData.height },
                     { label: 'Complexion', value: this.formData.complexion },
-                    { label: 'Qualification', value: this.formData.qualification },
-                    { label: 'Working Place', value: this.formData.workingPlace },
-                    { label: 'Designation', value: this.formData.designation },
-                    { label: 'Salary', value: this.formData.salary },
                     { label: 'Phone', value: this.formData.phone },
                     { label: 'Email', value: this.formData.email }
                 ];
@@ -1396,7 +1341,7 @@ body { font-family: Arial, sans-serif; margin: 20px; }
                     { label: "Father's Occupation", value: this.formData.fatherOccupation },
                     { label: "Mother's Name", value: this.formData.motherName },
                     { label: "Mother's Occupation", value: this.formData.motherOccupation },
-                    { label: 'Brother(s)', value: this.formData.brotherDetails },
+                    { label: 'Siblings', value: this.formData.brotherDetails },
                     { label: 'Sister(s)', value: this.formData.sisterDetails },
                     { label: 'In-law Details', value: this.formData.inlawDetails },
                     { label: 'Land/Property', value: this.formData.landDetails },
