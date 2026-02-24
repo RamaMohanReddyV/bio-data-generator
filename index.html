@@ -1,0 +1,1321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bio-Data Generator - Smart & Responsive</title>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 10px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            align-items: start;
+        }
+
+        .panel {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+        }
+
+        .left-panel {
+            max-height: 95vh;
+            overflow-y: auto;
+        }
+
+        .right-panel {
+            position: sticky;
+            top: 10px;
+            max-height: 95vh;
+            overflow-y: auto;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 5px;
+            font-size: 24px;
+        }
+
+        .subtitle {
+            color: #888;
+            font-size: 12px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eee;
+        }
+
+        .form-section {
+            margin-bottom: 18px;
+        }
+
+        .section-title {
+            background: #f5f5f5;
+            padding: 10px 12px;
+            border-left: 4px solid #667eea;
+            margin-bottom: 12px;
+            font-weight: 600;
+            color: #333;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 4px;
+            font-weight: 500;
+            color: #333;
+            font-size: 12px;
+        }
+
+        .required {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+
+        .optional {
+            color: #888;
+            font-size: 11px;
+            font-style: italic;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1.5px solid #ddd;
+            border-radius: 6px;
+            font-size: 12px;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 60px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .form-row.full {
+            grid-template-columns: 1fr;
+        }
+
+        .photo-upload {
+            padding: 15px;
+            border: 2px dashed #667eea;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .photo-upload:hover {
+            background: #f8f9ff;
+            border-color: #764ba2;
+        }
+
+        .photo-upload input {
+            display: none;
+        }
+
+        .photo-label {
+            cursor: pointer;
+            color: #667eea;
+            font-weight: 600;
+            display: block;
+            font-size: 13px;
+        }
+
+        .photo-info {
+            font-size: 11px;
+            color: #888;
+            margin-top: 6px;
+        }
+
+        #photoPreviewSmall {
+            width: 60px;
+            height: 80px;
+            margin: 8px auto 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            overflow: hidden;
+            background: #f5f5f5;
+        }
+
+        #photoPreviewSmall img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .button-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin: 15px 0;
+        }
+
+        .button-group.full {
+            grid-template-columns: 1fr;
+        }
+
+        button {
+            padding: 10px 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+            border: 1.5px solid #ddd;
+        }
+
+        .btn-secondary:hover {
+            background: #e8e8e8;
+        }
+
+        .btn-success {
+            background: #27ae60;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #229954;
+            transform: translateY(-1px);
+        }
+
+        .btn-download {
+            background: #3498db;
+            color: white;
+            padding: 8px 10px;
+            font-size: 11px;
+        }
+
+        .btn-download:hover {
+            background: #2980b9;
+        }
+
+        /* PREVIEW SECTION */
+        .preview-box {
+            background: #fafafa;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            font-size: 11px;
+            line-height: 1.5;
+            color: #333;
+            min-height: 400px;
+        }
+
+        .preview-title {
+            text-align: center;
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            letter-spacing: 1px;
+        }
+
+        .preview-photo {
+            float: right;
+            width: 50px;
+            height: 70px;
+            border: 1px solid #333;
+            margin-left: 10px;
+            margin-bottom: 8px;
+            background: #e8e8e8;
+            overflow: hidden;
+            border-radius: 2px;
+        }
+
+        .preview-photo.hidden {
+            display: none;
+        }
+
+        .preview-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .preview-section {
+            margin-bottom: 10px;
+        }
+
+        .preview-heading {
+            font-size: 12px;
+            font-weight: 700;
+            border-bottom: 1.5px solid #333;
+            padding-bottom: 3px;
+            margin-bottom: 6px;
+        }
+
+        .preview-row {
+            display: flex;
+            margin-bottom: 3px;
+            font-size: 11px;
+        }
+
+        .preview-label {
+            font-weight: 600;
+            min-width: 90px;
+            flex-shrink: 0;
+        }
+
+        .preview-label::after {
+            content: ':';
+            margin-right: 6px;
+        }
+
+        .preview-value {
+            flex: 1;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .download-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+            margin-top: 12px;
+        }
+
+        .message {
+            padding: 10px 12px;
+            border-radius: 6px;
+            margin-bottom: 12px;
+            font-size: 12px;
+            display: none;
+            border-left: 3px solid #667eea;
+        }
+
+        .message.show {
+            display: block;
+        }
+
+        .message.success {
+            background: #d5f4e6;
+            border-left-color: #27ae60;
+            color: #27ae60;
+        }
+
+        .message.error {
+            background: #fadbd8;
+            border-left-color: #e74c3c;
+            color: #e74c3c;
+        }
+
+        .message.info {
+            background: #d6eaf8;
+            border-left-color: #3498db;
+            color: #2c3e50;
+        }
+
+        .saved-section {
+            background: #f0f8ff;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #bdc3c7;
+            margin-bottom: 15px;
+        }
+
+        .saved-section h3 {
+            font-size: 11px;
+            margin-bottom: 6px;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        .saved-controls {
+            display: flex;
+            gap: 6px;
+            font-size: 11px;
+        }
+
+        .saved-controls select {
+            flex: 1;
+            font-size: 11px;
+        }
+
+        .saved-controls button {
+            padding: 6px 8px;
+            font-size: 11px;
+        }
+
+        .spinner {
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid #667eea;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 8px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* SCROLLBAR */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #bbb;
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #888;
+        }
+
+        /* RESPONSIVE - TABLET */
+        @media (max-width: 1024px) {
+            .container {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .right-panel {
+                position: static;
+            }
+
+            h1 {
+                font-size: 20px;
+            }
+
+            .section-title {
+                font-size: 12px;
+                padding: 8px 10px;
+            }
+
+            button {
+                padding: 9px 11px;
+                font-size: 11px;
+            }
+
+            .preview-box {
+                min-height: 300px;
+                padding: 12px;
+            }
+
+            .preview-title {
+                font-size: 14px;
+            }
+        }
+
+        /* RESPONSIVE - MOBILE */
+        @media (max-width: 600px) {
+            body {
+                padding: 8px;
+            }
+
+            .panel {
+                padding: 15px;
+                border-radius: 8px;
+            }
+
+            h1 {
+                font-size: 18px;
+                margin-bottom: 4px;
+            }
+
+            .subtitle {
+                font-size: 11px;
+                margin-bottom: 12px;
+                padding-bottom: 8px;
+            }
+
+            .form-section {
+                margin-bottom: 14px;
+            }
+
+            .section-title {
+                font-size: 11px;
+                padding: 8px;
+                margin-bottom: 10px;
+            }
+
+            label {
+                font-size: 11px;
+                margin-bottom: 3px;
+            }
+
+            input, select, textarea {
+                padding: 7px 8px;
+                font-size: 11px;
+            }
+
+            textarea {
+                min-height: 50px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+
+            button {
+                padding: 8px 10px;
+                font-size: 10px;
+            }
+
+            .preview-box {
+                min-height: 250px;
+                padding: 10px;
+                font-size: 10px;
+            }
+
+            .preview-title {
+                font-size: 13px;
+                margin-bottom: 10px;
+            }
+
+            .preview-photo {
+                width: 40px;
+                height: 55px;
+            }
+
+            .preview-label {
+                min-width: 75px;
+            }
+
+            .download-buttons {
+                grid-template-columns: 1fr;
+                gap: 5px;
+            }
+
+            .preview-row {
+                font-size: 10px;
+            }
+
+            .message {
+                padding: 8px 10px;
+                font-size: 11px;
+            }
+        }
+
+        @media print {
+            body { background: white; }
+            .container { display: block; }
+            .left-panel { display: none; }
+            .right-panel { position: static; max-height: none; }
+            .download-buttons { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- LEFT PANEL - FORM -->
+        <div class="left-panel panel">
+            <h1>📋 Bio-Data</h1>
+            <p class="subtitle">Create professional bio-data documents</p>
+
+            <div id="messageBox" class="message"></div>
+
+            <!-- SAVED ENTRIES -->
+            <div class="saved-section">
+                <h3>📁 Saved Entries</h3>
+                <div class="saved-controls">
+                    <select id="savedBios">
+                        <option value="">-- New Entry --</option>
+                    </select>
+                    <button class="btn-secondary" onclick="loadBio()" style="padding: 6px 10px;">Load</button>
+                    <button class="btn-secondary" onclick="deleteBio()" style="padding: 6px 8px;">×</button>
+                </div>
+            </div>
+
+            <!-- PERSONAL DETAILS -->
+            <div class="form-section">
+                <div class="section-title">👤 Personal Details</div>
+                
+                <div class="form-group">
+                    <label><span class="required">*</span> Full Name</label>
+                    <input type="text" id="fullName" class="required-field" placeholder="Your full name" maxlength="60">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label><span class="required">*</span> Birth Date</label>
+                        <input type="date" id="birthDate" class="required-field">
+                    </div>
+                    <div class="form-group">
+                        <label><span class="optional">(Optional)</span> Birth Time</label>
+                        <input type="time" id="birthTime">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label><span class="required">*</span> Birth Place</label>
+                    <input type="text" id="birthPlace" class="required-field" placeholder="City/Town">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label><span class="optional">(Optional)</span> Caste</label>
+                        <input type="text" id="caste" placeholder="If applicable">
+                    </div>
+                    <div class="form-group">
+                        <label><span class="optional">(Optional)</span> Gothram</label>
+                        <input type="text" id="gothram">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label><span class="optional">(Optional)</span> Height</label>
+                        <input type="text" id="height" placeholder="e.g., 5'8\"">
+                    </div>
+                    <div class="form-group">
+                        <label><span class="optional">(Optional)</span> Complexion</label>
+                        <select id="complexion">
+                            <option value="">--</option>
+                            <option value="Fair">Fair</option>
+                            <option value="Wheatish">Wheatish</option>
+                            <option value="Dusky">Dusky</option>
+                            <option value="Dark">Dark</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EDUCATION & CAREER -->
+            <div class="form-section">
+                <div class="section-title">🎓 Education & Career</div>
+                
+                <div class="form-group">
+                    <label><span class="optional">(Optional)</span> Qualification</label>
+                    <input type="text" id="qualification" placeholder="Degree/Certification">
+                </div>
+
+                <div class="form-group">
+                    <label><span class="optional">(Optional)</span> Working Place</label>
+                    <input type="text" id="workingPlace" placeholder="Company name">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label><span class="optional">(Optional)</span> Designation</label>
+                        <input type="text" id="designation" placeholder="Job title">
+                    </div>
+                    <div class="form-group">
+                        <label><span class="optional">(Optional)</span> Salary</label>
+                        <input type="text" id="salary" placeholder="Annual amount">
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAMILY DETAILS -->
+            <div class="form-section">
+                <div class="section-title">👨‍👩‍👧‍👦 Family Details</div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label><span class="required">*</span> Father's Name</label>
+                        <input type="text" id="fatherName" class="required-field" placeholder="Name">
+                    </div>
+                    <div class="form-group">
+                        <label><span class="optional">(Optional)</span> Father's Occupation</label>
+                        <input type="text" id="fatherOccupation" placeholder="Retired/Business">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label><span class="required">*</span> Mother's Name</label>
+                        <input type="text" id="motherName" class="required-field" placeholder="Name">
+                    </div>
+                    <div class="form-group">
+                        <label><span class="optional">(Optional)</span> Mother's Occupation</label>
+                        <input type="text" id="motherOccupation" placeholder="Service/Housewife">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label><span class="optional">(Optional)</span> Brothers</label>
+                    <textarea id="brotherDetails" placeholder="e.g., 1 Married, 1 Unmarried"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label><span class="optional">(Optional)</span> Sisters</label>
+                    <textarea id="sisterDetails" placeholder="e.g., 1 Married, 1 Unmarried"></textarea>
+                </div>
+            </div>
+
+            <!-- PROPERTY & ADDRESS -->
+            <div class="form-section">
+                <div class="section-title">🏠 Property & Address</div>
+                
+                <div class="form-group">
+                    <label><span class="optional">(Optional)</span> Land/Property</label>
+                    <textarea id="landDetails" placeholder="e.g., 5 acres in Punjab"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label><span class="required">*</span> Address</label>
+                    <textarea id="address" class="required-field" placeholder="Complete permanent address"></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label><span class="optional">(Optional)</span> Phone</label>
+                        <input type="tel" id="phone" placeholder="+91-XXXXXXXXXX">
+                    </div>
+                    <div class="form-group">
+                        <label><span class="optional">(Optional)</span> Email</label>
+                        <input type="email" id="email" placeholder="your@email.com">
+                    </div>
+                </div>
+            </div>
+
+            <!-- PHOTO UPLOAD -->
+            <div class="form-section">
+                <div class="section-title">📸 Photo</div>
+                <div class="photo-upload" onclick="document.getElementById('photoInput').click()">
+                    <label class="photo-label">📤 Upload Photo (JPG/PNG)</label>
+                    <input type="file" id="photoInput" accept="image/*">
+                    <p class="photo-info">Portrait photo (4:5 ratio)</p>
+                    <div id="photoPreviewSmall"></div>
+                </div>
+            </div>
+
+            <!-- ACTION BUTTONS -->
+            <div class="button-group">
+                <button class="btn-primary" onclick="updatePreview()">↻ Update</button>
+                <button class="btn-secondary" onclick="resetForm()">Clear</button>
+            </div>
+
+            <div class="button-group full">
+                <button class="btn-success" onclick="saveBio()">💾 Save Entry</button>
+            </div>
+        </div>
+
+        <!-- RIGHT PANEL - PREVIEW -->
+        <div class="right-panel panel">
+            <h1 style="font-size: 18px; margin-bottom: 8px;">📄 Preview</h1>
+            <p class="subtitle" style="margin-bottom: 12px;">How it will appear</p>
+
+            <div id="previewBox" class="preview-box">
+                <div class="preview-photo" id="previewPhoto"></div>
+                <div class="preview-title">BIO - DATA</div>
+
+                <div class="preview-section">
+                    <div class="preview-heading">PERSONAL DETAILS</div>
+                    <div id="previewPersonal"></div>
+                </div>
+
+                <div class="preview-section">
+                    <div class="preview-heading">FAMILY & ADDRESS</div>
+                    <div id="previewFamily"></div>
+                </div>
+            </div>
+
+            <div class="download-buttons">
+                <button class="btn-download" onclick="downloadPDF()">📄 PDF</button>
+                <button class="btn-download" onclick="downloadWord()">📗 Word</button>
+                <button class="btn-download" onclick="downloadImage()">🖼️ Image</button>
+                <button class="btn-download" onclick="window.print()">🖨️ Print</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // CONFIGURATION - Which fields are required
+        const REQUIRED_FIELDS = [
+            'fullName', 'birthDate', 'birthPlace', 'fatherName', 'motherName', 'address'
+        ];
+
+        // OPTIONAL FIELDS that won't show if empty
+        const OPTIONAL_SHOW_IF_FILLED = [
+            'birthTime', 'caste', 'gothram', 'height', 'complexion',
+            'qualification', 'workingPlace', 'designation', 'salary',
+            'fatherOccupation', 'motherOccupation', 'brotherDetails',
+            'sisterDetails', 'landDetails', 'phone', 'email'
+        ];
+
+        let formData = {};
+        let photoData = null;
+        let savedBios = [];
+        let currentBioId = null;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('✅ Bio-Data App loaded');
+            
+            // Auto-fill from localStorage if exists
+            autoFillFromStorage();
+            
+            // Load saved bios
+            loadSavedBiosList();
+            
+            // Photo handler
+            document.getElementById('photoInput').addEventListener('change', handlePhotoUpload);
+
+            // Auto-update on input
+            document.querySelectorAll('input, textarea, select').forEach(el => {
+                el.addEventListener('input', updatePreview);
+                el.addEventListener('change', updatePreview);
+            });
+
+            // Initial preview
+            updatePreview();
+        });
+
+        // AUTO-FILL FROM STORAGE
+        function autoFillFromStorage() {
+            const stored = localStorage.getItem('bioDataFormData');
+            if (stored) {
+                try {
+                    const data = JSON.parse(stored);
+                    Object.keys(data).forEach(key => {
+                        const el = document.getElementById(key);
+                        if (el) el.value = data[key];
+                    });
+                    showMessage('✓ Form auto-filled from previous entry', 'info');
+                } catch(e) {
+                    console.log('Could not load saved data');
+                }
+            }
+        }
+
+        // PHOTO HANDLING
+        function handlePhotoUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            if (file.size > 3 * 1024 * 1024) {
+                showMessage('File size should be less than 3MB', 'error');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                photoData = event.target.result;
+                const preview = `<img src="${photoData}" alt="Photo">`;
+                document.getElementById('photoPreviewSmall').innerHTML = preview;
+                document.getElementById('previewPhoto').innerHTML = preview;
+                document.getElementById('previewPhoto').classList.remove('hidden');
+                updatePreview();
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // UPDATE PREVIEW - ONLY SHOW FILLED FIELDS
+        function updatePreview() {
+            formData = {};
+
+            // Collect all data
+            const fields = [...REQUIRED_FIELDS, ...OPTIONAL_SHOW_IF_FILLED];
+            fields.forEach(field => {
+                const el = document.getElementById(field);
+                formData[field] = el ? el.value : '';
+            });
+
+            // Hide/Show photo based on whether photo exists
+            const photoElement = document.getElementById('previewPhoto');
+            if (photoData) {
+                photoElement.classList.remove('hidden');
+            } else {
+                photoElement.classList.add('hidden');
+            }
+
+            // Build preview - only show non-empty fields
+            let personalHTML = '';
+            const personalFields = [
+                'fullName', 'birthDate', 'birthTime', 'birthPlace', 'caste', 
+                'gothram', 'height', 'complexion', 'qualification', 'workingPlace',
+                'designation', 'salary', 'phone', 'email'
+            ];
+
+            personalFields.forEach(field => {
+                const value = formData[field]?.trim();
+                if (value) {
+                    const label = getFieldLabel(field);
+                    personalHTML += `<div class="preview-row"><div class="preview-label">${label}</div><div class="preview-value">${value}</div></div>`;
+                }
+            });
+
+            let familyHTML = '';
+            const familyFields = [
+                'fatherName', 'fatherOccupation', 'motherName', 'motherOccupation',
+                'brotherDetails', 'sisterDetails', 'landDetails', 'address'
+            ];
+
+            familyFields.forEach(field => {
+                const value = formData[field]?.trim();
+                if (value) {
+                    const label = getFieldLabel(field);
+                    familyHTML += `<div class="preview-row"><div class="preview-label">${label}</div><div class="preview-value">${value}</div></div>`;
+                }
+            });
+
+            document.getElementById('previewPersonal').innerHTML = personalHTML || '<p style="color:#999;font-size:10px;">Fill in personal details...</p>';
+            document.getElementById('previewFamily').innerHTML = familyHTML || '<p style="color:#999;font-size:10px;">Fill in family details...</p>';
+
+            // Save to localStorage automatically
+            localStorage.setItem('bioDataFormData', JSON.stringify(formData));
+        }
+
+        // GET FIELD LABEL
+        function getFieldLabel(field) {
+            const labels = {
+                fullName: 'Full Name',
+                birthDate: 'Birth Date',
+                birthTime: 'Birth Time',
+                birthPlace: 'Birth Place',
+                caste: 'Caste',
+                gothram: 'Gothram',
+                height: 'Height',
+                complexion: 'Complexion',
+                qualification: 'Qualification',
+                workingPlace: 'Working Place',
+                designation: 'Designation',
+                salary: 'Salary',
+                phone: 'Phone',
+                email: 'Email',
+                fatherName: "Father's Name",
+                fatherOccupation: "Father's Occupation",
+                motherName: "Mother's Name",
+                motherOccupation: "Mother's Occupation",
+                brotherDetails: 'Brothers',
+                sisterDetails: 'Sisters',
+                landDetails: 'Land/Property',
+                address: 'Address'
+            };
+            return labels[field] || field;
+        }
+
+        // VALIDATION
+        function validateForm() {
+            let valid = true;
+            REQUIRED_FIELDS.forEach(field => {
+                const el = document.getElementById(field);
+                if (!el.value.trim()) {
+                    showMessage(`${field} is required`, 'error');
+                    valid = false;
+                    return;
+                }
+            });
+            return valid;
+        }
+
+        // SHOW MESSAGE
+        function showMessage(msg, type = 'info') {
+            const box = document.getElementById('messageBox');
+            box.textContent = msg;
+            box.className = `message show ${type}`;
+            setTimeout(() => {
+                box.classList.remove('show');
+            }, 3000);
+        }
+
+        // RESET FORM
+        function resetForm() {
+            if (!confirm('Clear entire form?')) return;
+            
+            document.querySelectorAll('input, textarea, select').forEach(el => {
+                el.value = '';
+            });
+            
+            document.getElementById('photoInput').value = '';
+            photoData = null;
+            document.getElementById('photoPreviewSmall').innerHTML = '';
+            document.getElementById('previewPhoto').innerHTML = '';
+            document.getElementById('previewPhoto').classList.add('hidden');
+            currentBioId = null;
+            
+            updatePreview();
+            showMessage('Form cleared', 'info');
+        }
+
+        // SAVE BIO ENTRY
+        function saveBio() {
+            if (!validateForm()) return;
+
+            const fullName = document.getElementById('fullName').value.trim();
+            const id = currentBioId || Date.now().toString();
+
+            const bio = {
+                id,
+                name: fullName,
+                timestamp: new Date().toLocaleString(),
+                data: { ...formData },
+                photo: photoData
+            };
+
+            if (currentBioId) {
+                savedBios = savedBios.filter(b => b.id !== currentBioId);
+            }
+
+            savedBios.push(bio);
+            localStorage.setItem('bioDataBios', JSON.stringify(savedBios));
+            loadSavedBiosList();
+            currentBioId = null;
+            showMessage(`✅ Saved: "${fullName}"`, 'success');
+        }
+
+        // LOAD SAVED BIOS LIST
+        function loadSavedBiosList() {
+            const saved = localStorage.getItem('bioDataBios');
+            savedBios = saved ? JSON.parse(saved) : [];
+
+            const select = document.getElementById('savedBios');
+            select.innerHTML = '<option value="">-- New Entry --</option>';
+
+            savedBios.forEach(bio => {
+                const opt = document.createElement('option');
+                opt.value = bio.id;
+                opt.textContent = `${bio.name} (${bio.timestamp})`;
+                select.appendChild(opt);
+            });
+        }
+
+        // LOAD SELECTED BIO
+        function loadBio() {
+            const bioId = document.getElementById('savedBios').value;
+            if (!bioId) {
+                showMessage('Select an entry to load', 'error');
+                return;
+            }
+
+            const bio = savedBios.find(b => b.id === bioId);
+            if (bio) {
+                Object.keys(bio.data).forEach(key => {
+                    const el = document.getElementById(key);
+                    if (el) el.value = bio.data[key];
+                });
+
+                if (bio.photo && bio.photo.trim()) {
+                    photoData = bio.photo;
+                    document.getElementById('photoPreviewSmall').innerHTML = `<img src="${photoData}" alt="Photo">`;
+                    document.getElementById('previewPhoto').innerHTML = `<img src="${photoData}" alt="Photo">`;
+                    document.getElementById('previewPhoto').classList.remove('hidden');
+                } else {
+                    photoData = null;
+                    document.getElementById('photoPreviewSmall').innerHTML = '';
+                    document.getElementById('previewPhoto').classList.add('hidden');
+                }
+
+                currentBioId = bioId;
+                updatePreview();
+                showMessage(`✅ Loaded: "${bio.name}"`, 'success');
+            }
+        }
+
+        // DELETE BIO
+        function deleteBio() {
+            const bioId = document.getElementById('savedBios').value;
+            if (!bioId) {
+                showMessage('Select an entry to delete', 'error');
+                return;
+            }
+
+            const bio = savedBios.find(b => b.id === bioId);
+            if (confirm(`Delete "${bio.name}"?`)) {
+                savedBios = savedBios.filter(b => b.id !== bioId);
+                localStorage.setItem('bioDataBios', JSON.stringify(savedBios));
+                loadSavedBiosList();
+                document.getElementById('savedBios').value = '';
+                currentBioId = null;
+                showMessage(`🗑️ Deleted: "${bio.name}"`, 'success');
+            }
+        }
+
+        // DOWNLOAD AS PDF
+        async function downloadPDF() {
+            if (!validateForm()) return;
+
+            showMessage('Generating PDF...', 'info');
+
+            try {
+                if (typeof html2canvas === 'undefined') {
+                    await loadScript('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js');
+                }
+                if (typeof jsPDF === 'undefined') {
+                    await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
+                }
+
+                const element = document.getElementById('previewBox');
+                const canvas = await html2canvas(element, {
+                    scale: 3,
+                    useCORS: true,
+                    backgroundColor: '#ffffff',
+                    logging: false,
+                    allowTaint: true,
+                    imageTimeout: 0
+                });
+
+                // Calculate dimensions to match A4
+                const imgData = canvas.toDataURL('image/jpeg', 0.98);
+                const { jsPDF: PDFClass } = window.jspdf;
+                const pdf = new PDFClass({
+                    orientation: 'portrait',
+                    unit: 'mm',
+                    format: 'a4'
+                });
+
+                // A4 dimensions: 210mm x 297mm
+                const pageWidth = pdf.internal.pageSize.getWidth();
+                const pageHeight = pdf.internal.pageSize.getHeight();
+                const imgRatio = canvas.width / canvas.height;
+                let imgWidth = pageWidth - 10;
+                let imgHeight = imgWidth / imgRatio;
+
+                // Add with proper margins
+                const margin = 5;
+                pdf.addImage(imgData, 'JPEG', margin, margin, imgWidth, imgHeight);
+                pdf.save(`BioData_${formData.fullName || 'Entry'}.pdf`);
+
+                showMessage('✅ PDF downloaded!', 'success');
+            } catch (error) {
+                console.error(error);
+                showMessage(`Error: ${error.message}`, 'error');
+            }
+        }
+
+        // DOWNLOAD AS WORD
+        function downloadWord() {
+            if (!validateForm()) return;
+
+            showMessage('Generating Word document...', 'info');
+
+            try {
+                const html = generateWordHTML();
+                const blob = new Blob([html], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = `BioData_${formData.fullName || 'Entry'}.docx`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(url);
+                showMessage('✅ Word document downloaded!', 'success');
+            } catch (error) {
+                showMessage(`Error: ${error.message}`, 'error');
+            }
+        }
+
+        // GENERATE WORD HTML - PROFESSIONAL FORMAT
+        function generateWordHTML() {
+            let html = `<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Bio-Data</title>
+<style>
+    @page { size: A4; margin: 15mm; }
+    body { 
+        font-family: 'Calibri', 'Arial', sans-serif; 
+        margin: 0;
+        padding: 20px;
+        line-height: 1.5;
+        color: #333;
+    }
+    .container { max-width: 100%; }
+    .header { text-align: center; margin-bottom: 30px; }
+    .title { 
+        font-size: 24px; 
+        font-weight: bold; 
+        letter-spacing: 2px;
+        margin: 0 0 20px 0;
+    }
+    .photo-div { 
+        float: right; 
+        margin: 0 0 20px 20px;
+        text-align: center;
+    }
+    .photo-div img { 
+        width: 100px; 
+        height: 130px; 
+        border: 2px solid #333;
+        object-fit: cover;
+    }
+    .section-title { 
+        font-size: 14px;
+        font-weight: bold;
+        color: #222;
+        border-bottom: 2px solid #333;
+        padding-bottom: 8px;
+        margin-top: 25px;
+        margin-bottom: 15px;
+    }
+    .info-row {
+        display: flex;
+        margin-bottom: 10px;
+        page-break-inside: avoid;
+    }
+    .info-label {
+        font-weight: bold;
+        width: 150px;
+        min-width: 150px;
+        margin-right: 10px;
+    }
+    .info-value {
+        flex: 1;
+        word-wrap: break-word;
+    }
+    .clearfix { clear: both; }
+</style>
+</head>
+<body>
+<div class="container">`;
+
+            // Add photo section if exists
+            if (photoData && photoData.trim()) {
+                html += `<div class="photo-div"><img src="${photoData}" alt="Photo"></div>`;
+            }
+
+            // Title
+            html += `<div class="header"><div class="title">BIO - DATA</div></div><div class="clearfix"></div>`;
+
+            // Personal Details Section
+            html += `<div class="section-title">PERSONAL DETAILS</div>`;
+
+            const personalFields = [
+                { k: 'fullName', l: 'Full Name' },
+                { k: 'birthDate', l: 'Date of Birth' },
+                { k: 'birthTime', l: 'Time of Birth' },
+                { k: 'birthPlace', l: 'Place of Birth' },
+                { k: 'caste', l: 'Caste' },
+                { k: 'gothram', l: 'Gothram' },
+                { k: 'height', l: 'Height' },
+                { k: 'complexion', l: 'Complexion' },
+                { k: 'qualification', l: 'Qualification' },
+                { k: 'workingPlace', l: 'Working Place' },
+                { k: 'designation', l: 'Designation' },
+                { k: 'salary', l: 'Salary' },
+                { k: 'phone', l: 'Phone Number' },
+                { k: 'email', l: 'Email Address' }
+            ];
+
+            personalFields.forEach(f => {
+                if (formData[f.k]) {
+                    html += `<div class="info-row"><div class="info-label">${f.l}:</div><div class="info-value">${formData[f.k]}</div></div>`;
+                }
+            });
+
+            // Family & Address Section
+            html += `<div class="section-title">FAMILY DETAILS & ADDRESS</div>`;
+
+            const familyFields = [
+                { k: 'fatherName', l: "Father's Name" },
+                { k: 'fatherOccupation', l: "Father's Occupation" },
+                { k: 'motherName', l: "Mother's Name" },
+                { k: 'motherOccupation', l: "Mother's Occupation" },
+                { k: 'brotherDetails', l: 'Brothers' },
+                { k: 'sisterDetails', l: 'Sisters' },
+                { k: 'landDetails', l: 'Land/Property Details' },
+                { k: 'address', l: 'Permanent Address' }
+            ];
+
+            familyFields.forEach(f => {
+                if (formData[f.k]) {
+                    html += `<div class="info-row"><div class="info-label">${f.l}:</div><div class="info-value">${formData[f.k]}</div></div>`;
+                }
+            });
+
+            html += `</div>
+</body>
+</html>`;
+            return html;
+        }
+
+        // DOWNLOAD AS IMAGE
+        async function downloadImage() {
+            if (!validateForm()) return;
+
+            showMessage('Generating image...', 'info');
+
+            try {
+                if (typeof html2canvas === 'undefined') {
+                    await loadScript('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js');
+                }
+
+                const element = document.getElementById('previewBox');
+                const canvas = await html2canvas(element, {
+                    scale: 2,
+                    useCORS: true,
+                    backgroundColor: '#ffffff'
+                });
+
+                const link = document.createElement('a');
+                link.href = canvas.toDataURL('image/jpeg', 0.95);
+                link.download = `BioData_${formData.fullName || 'Entry'}.jpg`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+
+                showMessage('✅ Image downloaded!', 'success');
+            } catch (error) {
+                console.error(error);
+                showMessage(`Error: ${error.message}`, 'error');
+            }
+        }
+
+        // LOAD SCRIPTS
+        function loadScript(src) {
+            return new Promise((resolve, reject) => {
+                const script = document.createElement('script');
+                script.src = src;
+                script.onload = resolve;
+                script.onerror = reject;
+                document.head.appendChild(script);
+            });
+        }
+    </script>
+</body>
+</html>
