@@ -340,7 +340,6 @@
             font-size: 13px;
             font-weight: 700;
             color: #2c3e50;
-            border-bottom: 2px solid #2c3e50;
             padding-bottom: 4px;
             margin-bottom: 8px;
             text-decoration: underline;
@@ -846,11 +845,6 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Sister(s)</label>
-                    <textarea id="sisterDetails" placeholder="e.g., 1 Married Sister, 1 Unmarried Sister in Service"></textarea>
-                </div>
-
-                <div class="form-group">
                     <label>Mother-in-law Details (if applicable)</label>
                     <textarea id="inlawDetails" placeholder="Optional family expansion details"></textarea>
                 </div>
@@ -1014,10 +1008,6 @@
                             <div class="preview-value" id="prev_brotherDetails">—</div>
                         </div>
                         <div class="preview-row">
-                            <div class="preview-label">Sister(s)</div>
-                            <div class="preview-value" id="prev_sisterDetails">—</div>
-                        </div>
-                        <div class="preview-row">
                             <div class="preview-label">In-law Details</div>
                             <div class="preview-value" id="prev_inlawDetails">—</div>
                         </div>
@@ -1152,7 +1142,7 @@
                     'fullName', 'birthDate', 'age', 'birthPlace', 'caste', 'gothram',
                     'height', 'complexion', 'phone', 'email', 'fatherName',
                     'fatherOccupation', 'motherName', 'motherOccupation', 'brotherDetails',
-                    'sisterDetails', 'inlawDetails', 'landDetails', 'address'
+                    'inlawDetails', 'landDetails', 'address'
                 ];
 
                 fields.forEach(field => {
@@ -1178,7 +1168,6 @@
                     motherName: 'prev_motherName',
                     motherOccupation: 'prev_motherOccupation',
                     brotherDetails: 'prev_brotherDetails',
-                    sisterDetails: 'prev_sisterDetails',
                     inlawDetails: 'prev_inlawDetails',
                     landDetails: 'prev_landDetails',
                     address: 'prev_address'
@@ -1342,7 +1331,6 @@ body { font-family: Arial, sans-serif; margin: 20px; }
                     { label: "Mother's Name", value: this.formData.motherName },
                     { label: "Mother's Occupation", value: this.formData.motherOccupation },
                     { label: 'Siblings', value: this.formData.brotherDetails },
-                    { label: 'Sister(s)', value: this.formData.sisterDetails },
                     { label: 'In-law Details', value: this.formData.inlawDetails },
                     { label: 'Land/Property', value: this.formData.landDetails },
                     { label: 'Address', value: this.formData.address }
